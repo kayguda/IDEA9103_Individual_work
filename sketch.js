@@ -1,3 +1,4 @@
+// Global variables
 let imgOriginal;
 let img;
 let dots = [];
@@ -7,61 +8,69 @@ let imgScale = 1;
 let imgXOffset = 0;
 let imgYOffset = 0;
 
-// 音频相关
+// Snake variables
+let snake;
+
+// Audio variables
 let song;
 let fft;
-let amp;
-
-// 蛇
-let snake;
+let numBins = 64;
+let smoothing = 0.8;
+let volumeSlider;
 
 function preload() {
   imgOriginal = loadImage('assets/Piet_Mondrian Broadway_Boogie_Woogie.jpeg');
-  song = loadSound('assets/Aimer-Eclipse.wav'); 
+  song = loadSound('assets/Aimer-Eclipse.wav');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noStroke();
 
-  // 初始化 dots
+  // Initialize FFT
+  fft = new p5.FFT(smoothing, numBins);
+  song.connect(fft);
+
+  // Add Play/Pause button
+  let playButton = createButton('Play/Pause');
+  playButton.position(20, 20);
+  playButton.mousePressed(play_pause);
+
+  // Create volume slider
+  volumeSlider = createSlider(0, 1, 0.5, 0.01);
+  volumeSlider.position(width - 160, 30);
+  volumeSlider.style('width', '150px');
+
+  // Initialize image and dots
   calculateImageAndDots();
 
-  // 初始化 snake
-  snake = new Snake(width / 2, height / 2, 10);
-
-  // 初始化音频分析
-  fft = new p5.FFT(0.8, 64); // smoothing, bins
-  amp = new p5.Amplitude();
-
-  // 播放按钮
-  let button = createButton('Play/Pause');
-  button.position(20, 20);
-  button.mousePressed(togglePlay);
-
-  song.connect(fft);
-  amp.setInput(song);
+  // Initialize snake
+  snake = new Snake();
 }
 
 function draw() {
   background(255);
 
-  // 画 dots
+  // Update volume
+  song.setVolume(volumeSlider.value());
+
+  // Display dots
   for (let dot of dots) {
     dot.display();
   }
 
-  // 获取音频数据
+  // Analyze spectrum
   let spectrum = fft.analyze();
-  let level = amp.getLevel();
+  let energy = fft.getEnergy(20, 20000);
 
-  // 更新和画 snake
-  snake.update(level, spectrum);
-  snake.draw();
+  // Update and display snake
+  snake.update(energy, spectrum);
+  snake.display();
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  volumeSlider.position(width - 160, 30);
   calculateImageAndDots();
 }
 
@@ -85,9 +94,9 @@ function calculateImageAndDots() {
   }
 }
 
-function togglePlay() {
+function play_pause() {
   if (song.isPlaying()) {
-    song.stop();
+    song.pause();
   } else {
     song.loop();
   }
