@@ -1,37 +1,41 @@
 class Snake {
-  constructor() {
-    this.segments = [];
-    this.length = 15;  // Number of snake segments
-    this.x = width / 2;
-    this.y = height / 2;
-    this.angle = 0;
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.speed = 2;
+    this.angle = random(TWO_PI);
   }
 
-  update(level) {
-    // Changing movement speed with audio level (dynamic)
-    this.angle += map(level, 0, 1, 0.02, 0.2);
+  update(level, spectrum) {
+    // 用 level 控制速度
+    this.speed = map(level, 0, 1, 1, 10);
 
-    this.x += cos(this.angle) * 5;
-    this.y += sin(this.angle) * 5;
+    // 用某段频谱控制角度变化
+    let freqEnergy = spectrum[10]; // 选第10个频段
+    this.angle += map(freqEnergy, 0, 255, -0.1, 0.1);
 
-    // Make sure the snake doesn't go out of bounds
+    // 更新位置
+    this.x += this.speed * cos(this.angle);
+    this.y += this.speed * sin(this.angle);
+
+    // 边界处理
     this.x = constrain(this.x, 0, width);
     this.y = constrain(this.y, 0, height);
-
-    // Adding new segments
-    this.segments.push({ x: this.x, y: this.y });
-
-    // Keep the snake length
-    if (this.segments.length > this.length) {
-      this.segments.shift();
-    }
   }
 
   display() {
-    fill(255, 100, 0);
+    fill(0, 255, 0);
     noStroke();
-    for (let seg of this.segments) {
-      ellipse(seg.x, seg.y, 15, 15);
+    ellipse(this.x, this.y, 20, 20); // Snake 头部
+  }
+
+  eatDots(dotArray) {
+    for (let i = dotArray.length - 1; i >= 0; i--) {
+      let d = dist(this.x, this.y, dotArray[i].x, dotArray[i].y);
+      if (d < 15) {
+        // 吃掉 Dot
+        dotArray.splice(i, 1);
+      }
     }
   }
 }

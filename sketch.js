@@ -1,46 +1,66 @@
-let imgOriginal;    // The original image will not be modified
-let img;            // Current drawing image (copy original image each time)
-let dots = [];      // Stores all Dot instances
-let xStep = 10;     // Lateral pixel spacing
-let yStep = 10;     // Vertical pixel spacing
-let imgScale = 1;   // Image zoom ratio
-let imgXOffset = 0; // Image center offset
-let imgYOffset = 0; // Reserve the vertical offset
+let imgOriginal, img, dots = [], snake;
+let xStep = 10, yStep = 10;
+let imgScale = 1, imgXOffset = 0, imgYOffset = 0;
+
+let audio, fft, amplitude;
 
 function preload() {
-  // Load the original image only once
   imgOriginal = loadImage('assets/Piet_Mondrian Broadway_Boogie_Woogie.jpeg');
+  audio = loadSound('assets/Aimer-Eclipse.wav'); 
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noStroke();
-  calculateImageAndDots(); // Initialize the image and Dot data
+  calculateImageAndDots();
+
+  fft = new p5.FFT(0.8, 64);
+  amplitude = new p5.Amplitude();
+  amplitude.setInput(audio);
+
+  snake = new Snake(width / 2, height / 2);
+
+  let button = createButton('Play / Pause');
+  button.position(10, 10);
+  button.mousePressed(() => {
+    if (audio.isPlaying()) audio.pause();
+    else audio.loop();
+  });
 }
 
 function draw() {
   background(255);
+
+  // Draw Dot Art
   for (let dot of dots) {
     dot.display();
   }
-  noLoop();
+
+  // Get audio data
+  let level = amplitude.getLevel();
+  let spectrum = fft.analyze();
+
+  // Update Snake
+  snake.update(level, spectrum);
+  snake.display();
+
+  // Snake eats dots
+  snake.eatDots(dots);
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  calculateImageAndDots(); // Reconstruct the image with dots each time the window changes
+  calculateImageAndDots();
 }
 
 function calculateImageAndDots() {
   dots = [];
 
-  // Each time a new image object is copied from the original image, it is used for scaling
   img = imgOriginal.get();
-  img.resize(0, height); // Scale by height, keeping the aspect ratio
-
+  img.resize(0, height);
   imgScale = height / img.height;
   imgXOffset = (width - img.width) / 2;
-  imgYOffset = 0; // Not currently used, but could be used in future extensions
+  imgYOffset = 0;
 
   for (let i = 0; i < img.width; i += xStep) {
     for (let j = 0; j < img.height; j += yStep) {
