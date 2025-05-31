@@ -1,51 +1,63 @@
-let imgOriginal, img, dots = [], snake;
-let xStep = 10, yStep = 10;
-let imgScale = 1, imgXOffset = 0, imgYOffset = 0;
+let imgOriginal;
+let img;
+let dots = [];
+let xStep = 10;
+let yStep = 10;
+let imgScale = 1;
+let imgXOffset = 0;
+let imgYOffset = 0;
 
-let audio, fft, amplitude;
+// 音频相关
+let song;
+let fft;
+let amp;
+
+// 蛇
+let snake;
 
 function preload() {
   imgOriginal = loadImage('assets/Piet_Mondrian Broadway_Boogie_Woogie.jpeg');
-  audio = loadSound('assets/Aimer-Eclipse.wav'); 
+  song = loadSound('assets/Aimer-Eclipse.wav'); 
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noStroke();
+
+  // 初始化 dots
   calculateImageAndDots();
 
-  fft = new p5.FFT(0.8, 64);
-  amplitude = new p5.Amplitude();
-  amplitude.setInput(audio);
+  // 初始化 snake
+  snake = new Snake(width / 2, height / 2, 10);
 
-  snake = new Snake(width / 2, height / 2);
+  // 初始化音频分析
+  fft = new p5.FFT(0.8, 64); // smoothing, bins
+  amp = new p5.Amplitude();
 
-  let button = createButton('Play / Pause');
-  button.position(10, 10);
-  button.mousePressed(() => {
-    if (audio.isPlaying()) audio.pause();
-    else audio.loop();
-  });
+  // 播放按钮
+  let button = createButton('Play/Pause');
+  button.position(20, 20);
+  button.mousePressed(togglePlay);
+
+  song.connect(fft);
+  amp.setInput(song);
 }
 
 function draw() {
   background(255);
 
-  // Draw Dot Art
+  // 画 dots
   for (let dot of dots) {
     dot.display();
   }
 
-  // Get audio data
-  let level = amplitude.getLevel();
+  // 获取音频数据
   let spectrum = fft.analyze();
+  let level = amp.getLevel();
 
-  // Update Snake
+  // 更新和画 snake
   snake.update(level, spectrum);
-  snake.display();
-
-  // Snake eats dots
-  snake.eatDots(dots);
+  snake.draw();
 }
 
 function windowResized() {
@@ -58,6 +70,7 @@ function calculateImageAndDots() {
 
   img = imgOriginal.get();
   img.resize(0, height);
+
   imgScale = height / img.height;
   imgXOffset = (width - img.width) / 2;
   imgYOffset = 0;
@@ -69,5 +82,13 @@ function calculateImageAndDots() {
       let size = map(bri, 0, 255, 20, 0);
       dots.push(new Dot(i + imgXOffset, j + imgYOffset, pixelColor, size));
     }
+  }
+}
+
+function togglePlay() {
+  if (song.isPlaying()) {
+    song.stop();
+  } else {
+    song.loop();
   }
 }

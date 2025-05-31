@@ -11,4 +11,8 @@ class Dot {
     noStroke();
     circle(this.x, this.y, this.size);
   }
+
+  changeColor(newColor) {
+    this.col = newColor;
+  }
 }
