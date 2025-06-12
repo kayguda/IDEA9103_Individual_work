@@ -30,13 +30,13 @@ The project is responsive: resizing the browser window will automatically adapt 
 
 **2. Details**
 
-In this individual work, I carried out personalized expansion and animation design based on the Pixel Dot Art visualization completed by our group. I mainly introduced the mechanism of "audio controlling the mtovement of snake-like elements and interacting with images" to integrate the dynamic sound with the static lattice structure of images to achieve a more immersive and rhythmic visual experience.
+In this individual work, I carried out personalized expansion and animation design based on the Pixel Dot Art visualization completed by our group. I was just trying to make the picture move, but then I realized that music is a natural source of rhythm, so I tried to make the movement of the snake controlled by the audio, so that the picture would be different and more interesting each time the music was played.
 
 **Of the four available ways to personalize animations, I chose audio as the source of animation drivers. The implementation is as follows:**
 
-I used the FFT (Fast Fourier Transform) spectrum analyzer from the p5.sound library to extract the features in the audio.
+I used the FFT (Fast Fourier Transform) spectrum analyzer from the p5.sound library to extract the features in the audio.At first, when I used FFT to control the speed, the snake moved very fast and the picture was very messy. Later, I adjusted the mapping range and smoothing parameter to make it move more naturally.
 
-The overall frequency energy, from 20Hz to 20,000 Hz, is obtained using fft.getEnergy() and used to control the snake's movement speed.
+The overall frequency energy, from 20Hz to 20,000 Hz, is obtained using fft.getEnergy() and used to control the snake's movement speed.The higher the value, the faster the snake runs, and it feels like the music is pushing it.
 
 The spectrum array is obtained by fft.analyze(), and the low frequency bands in it are mapped to small angular perturbations that affect the forward direction of the snake, resulting in a dynamic but smooth dancing trajectory.
 
