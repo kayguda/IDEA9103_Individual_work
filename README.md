@@ -72,9 +72,13 @@ Inspiration 1: Music visualization works
 
 Inspired by The Coding Train's "17.11: Sound Visualization: Frequency Analysis with FFT - p5.js Sound Tutorial"（https://www.youtube.com/watch?v=2O3nm0Nvbi4）, I learned how to use p5.FFT to perform real-time analysis of sound frequency and energy, and map it to dynamic visual effects. This video demonstrates the possibility of audio-driven graphic behavior. My project precisely draws on this approach, enabling the snake to move in accordance with the music rhythm and influence the image.
 
+![Video screen shot](assets/Video shot.png)
+
 Inspiration 2: The logic of the snake in the game
 
 Although I didn't fully reproduce the traditional game mechanics, I was inspired to design a snake on a graphic that was driven by sound and interacted with pixels on the graphic (color change). This combination strengthens the connection among "sound-image-behavior", and makes the animation have richer story and perceptual logic.
+
+![snake](assets/snake.png)
 
 By combining these two kinds of inspiration, my animation works not only retain the visual style of dot matrix image restoration in group code, but also introduce a novel and interactive sound driving mechanism to realize the creation of my personal style.
 
