@@ -1,7 +1,7 @@
 # IDEA9103_Individual_work
 Individual Project created for IDEA9103 final job
 
-1. Instructions on how to interact with the work
+**1. Instructions on how to interact with the work**
 
 How to interact with the work
 1️. Load the webpage
@@ -23,11 +23,11 @@ When the Snake touches a Dot, that Dot's color will change dynamically based on 
 The project is responsive: resizing the browser window will automatically adapt the artwork layout to fit the new window size.
 
 
-2. Details
+**2. Details**
 
 In this individual work, I carried out personalized expansion and animation design based on the Pixel Dot Art visualization completed by our group. I mainly introduced the mechanism of "audio controlling the movement of snake-like elements and interacting with images" to integrate the dynamic sound with the static lattice structure of images to achieve a more immersive and rhythmic visual experience.
 
-Of the four available ways to personalize animations, I chose audio as the source of animation drivers. The implementation is as follows:
+**Of the four available ways to personalize animations, I chose audio as the source of animation drivers. The implementation is as follows:**
 
 I used the FFT (Fast Fourier Transform) spectrum analyzer from the p5.sound library to extract the features in the audio.
 
@@ -38,7 +38,7 @@ The spectrum array is obtained by fft.analyze(), and the low frequency bands in 
 In this way, the whole work has an obvious visual effect of "dancing with the rhythm of the music". At the same time, combined with the static dot matrix composition of the original image, the emotional fluctuations and rhythm changes of the sound are displayed between the combination of movement and static.
 
 
-Unlike the original team version, I have significantly expanded the team code in the following ways:
+**Unlike the original team version, I have significantly expanded the team code in the following ways:**
 
 Implementation of sound driving mechanism: Through FFT spectrum analysis provided by p5.sound, I extract the energy and spectrum of audio, and use them to control the speed and direction change of the snake, so that the animation responds to the music rhythm.
 
@@ -46,10 +46,8 @@ Lattice color change logic: When the snake "collids" with some points in the lat
 
 Add UI interaction: I added play/pause buttons and volume sliders to give the user more control over their sound.
 
-Add UI interaction: I added play/pause buttons and volume sliders to give the user more control over their sound.
 
-
-In my personal code, I mainly designed the linkage animation of dots and snake elements in the image, including:
+**In my personal code, I mainly designed the linkage animation of dots and snake elements in the image, including:**
 
 dots properties change: These dots, which are used to restore the pixel image, will change color in my animation when the snake touches them, changing to a random RGB color, creating a visual feedback like "activated".
 
@@ -57,7 +55,7 @@ snake's movement path: The snake, controlled by audio, shutters between the imag
 
 Sound and picture linkage: the stronger the energy of the sound, the faster the speed of the snake; The larger the frequency change, the more obvious the orientation change of the snake. This allows the final rendered animation to be highly synchronized with the music production.
 
-The difference with other team members is:
+**The difference with other team members is:**
 
 Some team members used timers for dot matrix flickering animation.
 
@@ -68,7 +66,7 @@ I, on the other hand, focused on the mapping of sound frequency to movement beha
 This ensured that my work was clearly unique among the group members.
 
 
-My personal animation creative inspiration mainly comes from the following two directions:
+**My personal animation creative inspiration mainly comes from the following two directions:**
 
 Inspiration 1: Music visualization works
 
@@ -80,7 +78,7 @@ Although I didn't fully reproduce the traditional game mechanics, I was inspired
 
 By combining these two kinds of inspiration, my animation works not only retain the visual style of dot matrix image restoration in group code, but also introduce a novel and interactive sound driving mechanism to realize the creation of my personal style.
 
-My personal animation was based on the pixel image generation system of the group project, and introduced the dynamic element of sound control on it, and realized the following key technical logic:
+**My personal animation was based on the pixel image generation system of the group project, and introduced the dynamic element of sound control on it, and realized the following key technical logic:**
 
 Audio loading and analysis
 
