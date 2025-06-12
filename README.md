@@ -6,15 +6,19 @@ Individual Project created for IDEA9103 final job
 How to interact with the work
 1️. Load the webpage
 Open the project using Live Server or in a browser (Google Chrome recommended).
+
 2️. Play the audio
 Click the "Play/Pause" button on the top-left corner to start or pause the background music.
 In my code The audio file is "Aimer-Eclipse.wav". Users can replace the audio files themselves.
+
 3️. Adjust the volume
 On the right side of the screen, use the volume slider to control the playback volume of the music.
+
 4️. Watch the animation
 The Pixel Dot Art version of "Piet Mondrian Broadway Boogie Woogie" is displayed using dots.
 A Snake moves automatically across the screen, with its speed and direction controlled by the audio spectrum and energy.
 When the Snake touches a Dot, that Dot's color will change dynamically based on the interaction.
+
 5️. Responsive design
 The project is responsive: resizing the browser window will automatically adapt the artwork layout to fit the new window size.
 
